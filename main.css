@@ -1,0 +1,325 @@
+@charset "UTF-8";
+/*
+sass main.scss:main.css -w
+*/
+:root {
+  color-scheme: dark;
+  --block-size: 3rem;
+  --air-image: none;
+  --stone-image: url("./assets/stone.png");
+  --grass-image: url("./assets/grass_side_carried.png");
+  --dirt-image: url("./assets/dirt.png");
+  --log-image: url("./assets/log_oak.png");
+  --leaves-image: url("./assets/azalea_leaves.png");
+}
+
+body {
+  color: white;
+  background-color: lightSkyBlue;
+  block-size: 100vh;
+  block-size: 100dvb;
+  margin: 0;
+  box-sizing: border-box;
+  font-family: system-ui, sans-serif;
+  overflow: hidden;
+  display: grid;
+  place-content: end center;
+}
+
+label, button {
+  cursor: pointer;
+}
+
+h1, p {
+  margin: 0;
+}
+
+h1, strong {
+  font-weight: 600;
+}
+
+a {
+  color: inherit;
+}
+
+.info {
+  z-index: 1;
+  position: absolute;
+  inset-block-start: 0;
+  inset-inline: 0;
+  padding: 0.75rem;
+  margin-inline: auto;
+  inline-size: fit-content;
+  max-inline-size: min(60rem, 100vw - 10rem);
+  background-color: rgba(17, 17, 17, 0.4666666667);
+  --backdrop-filter: blur(.4rem);
+  -webkit-backdrop-filter: var(--backdrop-filter);
+  backdrop-filter: var(--backdrop-filter);
+  border-radius: 0.6rem;
+  border-start-start-radius: 0;
+  border-start-end-radius: 0;
+  text-align: center;
+  box-shadow: 0 0 1.5rem rgba(0, 0, 0, 0.4);
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+.info strong {
+  color: gold;
+}
+.info .text {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+.info .close {
+  padding-inline: 0.3rem;
+}
+.info .close::before {
+  content: "⨉";
+  font-size: 1.5rem;
+}
+.info .close > input[type=checkbox] {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+.info:has(.close > input[type=checkbox]:checked) {
+  display: none;
+}
+.info .not-supported {
+  border: 2px solid red;
+  background-color: rgba(255, 0, 0, 0.2666666667);
+  border-radius: 0.7rem;
+  padding: 0.6rem 0.4rem;
+}
+@supports selector(:has(a)) {
+  .info .not-supported {
+    display: none;
+  }
+}
+
+.controls {
+  z-index: 1;
+  position: absolute;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 1.25rem;
+  border-radius: 1rem;
+  box-shadow: 0 0 1.5rem rgba(0, 0, 0, 0.4);
+  background-color: rgba(34, 34, 34, 0.5333333333);
+  --backdrop-filter: blur(.3rem);
+  -webkit-backdrop-filter: var(--backdrop-filter);
+  backdrop-filter: var(--backdrop-filter);
+  padding: 0.75rem;
+  margin-block-end: 0.75rem;
+  inset-block-end: 0;
+  inset-inline: 0;
+  margin-inline: auto;
+  inline-size: fit-content;
+  max-inline-size: calc(100vw - 4rem);
+}
+.controls .block-chooser {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.controls .block-chooser > label {
+  display: block;
+  inline-size: 3rem;
+  block-size: 3rem;
+  border-radius: 0.3rem;
+  box-sizing: border-box;
+  outline-offset: -1px;
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  image-rendering: pixelated;
+}
+.controls .block-chooser > label.air {
+  background-color: lightSkyBlue;
+}
+.controls .block-chooser > label.air {
+  background-image: var(--air-image);
+}
+.controls .block-chooser > label.stone {
+  background-image: var(--stone-image);
+}
+.controls .block-chooser > label.grass {
+  background-image: var(--grass-image);
+}
+.controls .block-chooser > label.dirt {
+  background-image: var(--dirt-image);
+}
+.controls .block-chooser > label.log {
+  background-image: var(--log-image);
+}
+.controls .block-chooser > label.leaves {
+  background-image: var(--leaves-image);
+}
+.controls .block-chooser > label:hover {
+  outline: 3px solid silver;
+}
+.controls .block-chooser > label:has(> input[type=radio]:checked) {
+  outline: 3px solid white;
+}
+.controls .block-chooser > label > input[type=radio] {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+.controls .move-buttons {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.controls .move-buttons > button {
+  display: block;
+  inline-size: 3rem;
+  block-size: 3rem;
+  border: none;
+  border-radius: 0.3rem;
+  background-color: rgba(0, 0, 0, 0.2);
+  font-size: 1.2rem;
+}
+.controls .move-buttons > button:hover {
+  background-color: rgba(0, 0, 0, 0.3333333333);
+}
+.controls .move-buttons > button:active {
+  background-color: rgba(0, 0, 0, 0.4666666667);
+}
+.controls:has(> .block-chooser > .air > input[type=radio]:checked) ~ .content .block > label:not(.air) {
+  display: none;
+}
+.controls:has(> .block-chooser > .stone > input[type=radio]:checked) ~ .content .block > label:not(.stone) {
+  display: none;
+}
+.controls:has(> .block-chooser > .grass > input[type=radio]:checked) ~ .content .block > label:not(.grass) {
+  display: none;
+}
+.controls:has(> .block-chooser > .dirt > input[type=radio]:checked) ~ .content .block > label:not(.dirt) {
+  display: none;
+}
+.controls:has(> .block-chooser > .log > input[type=radio]:checked) ~ .content .block > label:not(.log) {
+  display: none;
+}
+.controls:has(> .block-chooser > .leaves > input[type=radio]:checked) ~ .content .block > label:not(.leaves) {
+  display: none;
+}
+.controls:has(> .move-buttons > .up:active) ~ .content .down {
+  animation-play-state: running;
+}
+.controls:has(> .move-buttons > .down:active) ~ .content .up {
+  animation-play-state: running;
+}
+.controls:has(> .move-buttons > .left:active) ~ .content .right {
+  animation-play-state: running;
+}
+.controls:has(> .move-buttons > .right:active) ~ .content .left {
+  animation-play-state: running;
+}
+
+.content {
+  inline-size: fit-content;
+  --animation-duration: 10000s;
+  --max-translation: 300000rem;
+}
+.content .down {
+  animation: var(--animation-duration) linear paused move-down;
+}
+@keyframes move-down {
+  from {
+    translate: 0 0;
+  }
+  to {
+    translate: 0 calc(var(--max-translation));
+  }
+}
+.content .up {
+  animation: var(--animation-duration) linear paused move-up;
+}
+@keyframes move-up {
+  from {
+    translate: 0 0;
+  }
+  to {
+    translate: 0 calc(-1 * var(--max-translation));
+  }
+}
+.content .left {
+  animation: var(--animation-duration) linear paused move-left;
+}
+@keyframes move-left {
+  from {
+    translate: 0 0;
+  }
+  to {
+    translate: calc(-1 * var(--max-translation)) 0;
+  }
+}
+.content .right {
+  animation: var(--animation-duration) linear paused move-right;
+}
+@keyframes move-right {
+  from {
+    translate: 0 0;
+  }
+  to {
+    translate: calc(var(--max-translation)) 0;
+  }
+}
+.content .blocks {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  padding: 1px;
+  background-color: gray;
+}
+.content .blocks .layer {
+  display: flex;
+  gap: 1px;
+}
+.content .blocks .block {
+  inline-size: var(--block-size);
+  block-size: var(--block-size);
+  position: relative;
+  background-color: lightSkyBlue;
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  image-rendering: pixelated;
+}
+.content .blocks .block > label {
+  display: block;
+  block-size: 100%;
+  inline-size: 100%;
+  box-sizing: border-box;
+}
+.content .blocks .block > label:hover {
+  border: 3px solid white;
+}
+.content .blocks .block > label > input[type=radio] {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+.content .blocks .block:has(> label.air > input[type=radio]:checked) {
+  background-image: var(--air-image);
+}
+.content .blocks .block:has(> label.stone > input[type=radio]:checked) {
+  background-image: var(--stone-image);
+}
+.content .blocks .block:has(> label.grass > input[type=radio]:checked) {
+  background-image: var(--grass-image);
+}
+.content .blocks .block:has(> label.dirt > input[type=radio]:checked) {
+  background-image: var(--dirt-image);
+}
+.content .blocks .block:has(> label.log > input[type=radio]:checked) {
+  background-image: var(--log-image);
+}
+.content .blocks .block:has(> label.leaves > input[type=radio]:checked) {
+  background-image: var(--leaves-image);
+}
+
+/*# sourceMappingURL=main.css.map */
